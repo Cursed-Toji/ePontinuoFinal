@@ -22,8 +22,6 @@ class PipedriveAPI
 
         $url = $this->base_url . '/activities?' . http_build_query($params);
 
-
-
         $response = Http::get($url)->json();
 
         if (!isset($response)) {

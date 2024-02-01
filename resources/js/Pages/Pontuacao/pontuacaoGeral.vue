@@ -300,7 +300,7 @@ const makeRequest = async () => {
             startDate: dates.value[0],
             endDate: dates.value[1]
         });
-        console.log(response.data.message);
+        console.log(response.data.userActivities);
     } catch (error) {
         console.error('Error making request:', error);
     }

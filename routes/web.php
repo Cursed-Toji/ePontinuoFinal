@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PipedriveController;
+use App\Http\Controllers\PontuacaoController;
+use App\Http\Controllers\TestController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -35,4 +38,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+
+Route::get('/pipedrive', [PipedriveController::class, 'index']);
+Route::post('/pipedrive', [PipedriveController::class, 'index']);
+
+
+Route::get('/pontuacao', [PontuacaoController::class, 'geral']);
+Route::post('/pontuacao', [PontuacaoController::class, 'atualizar']);
+
+
+require __DIR__ . '/auth.php';

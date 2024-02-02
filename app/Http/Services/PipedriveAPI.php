@@ -17,10 +17,13 @@ class PipedriveAPI
             'start_date' => $startDate,
             'end_date' => $endDate,
             'done' => $done,
+            'limit' => "30000000",
             'api_token' => "d0f27a8c3a00dbd3bab46ead2a6d3bfc7fec6aa7",
         ];
 
         $url = $this->base_url . '/activities?' . http_build_query($params);
+
+        error_log($url);
 
         $response = Http::get($url)->json();
 

@@ -87,10 +87,10 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue';
+import { ref, reactive, watchEffect } from 'vue';
+import { useForm } from '@inertiajs/vue3';
 import CalendarRange from '@/Components/CalendarRange.vue';
-// import $ from 'jquery';
-import axios from 'axios';
+// import axios from 'axios';
 
 
 
@@ -252,59 +252,62 @@ const users = reactive([
 ]);
 
 
-
-Object.keys(props.userActivities).forEach(userId => {
-    const user = users.find(user => user.id == userId);
-    if (user) {
-        user.calls = props.userActivities[userId]['call'];
-        user.tasks = props.userActivities[userId]['task'];
-        user.impUm = props.userActivities[userId]['imp_acessorias_etapa_i'];
-        user.impDois = props.userActivities[userId]['imp_etapa_ii'];
-        user.impTres = props.userActivities[userId]['imp_acessorias_etapa_iii'];
-        user.impQuatro = props.userActivities[userId]['imp_acessorias_etapa_iv'];
-        user.impAdicional = props.userActivities[userId]['treinamento_adicional'];
-        user.impGestao = props.userActivities[userId]['imp_etapa_iii'];
-        user.impKomunic = props.userActivities[userId]['imp_komunic_'];
-        user.acompanhamentos = props.userActivities[userId]['acompanhamento_'];
-        user.lojaApple = props.userActivities[userId]['loja_apple_'];
-        user.reagendamentos = props.userActivities[userId]['reagendar'];
-        user.chats = props.userActivities[userId]['chat'];
-        user.posVendas = props.userActivities[userId]['ps_venda'];
-        user.komunic = props.userActivities[userId]['komunic'];
-
-
-        user.total = (user.calls * 5) + (user.tasks * 25) + (user.impUm * 60) + 
-        (user.impDois * 60) + (user.impTres * 60) + (user.impQuatro * 60) + 
-        (user.impAdicional * 45) + (user.impGestao * 60) + 
-        (user.impKomunic * 50) + (user.acompanhamentos * 5) + 
-        (user.lojaApple * 30) + (user.reagendamentos * 5) + (user.chats * 15) + 
-        (user.posVendas * 30) + (user.komunic * 5);
+const updateUserActivities = () => {
+    Object.keys(props.userActivities).forEach(userId => {
+        const user = users.find(user => user.id == userId);
+        if (user) {
+            user.calls = props.userActivities[userId]['call'];
+            user.tasks = props.userActivities[userId]['task'];
+            user.impUm = props.userActivities[userId]['imp_acessorias_etapa_i'];
+            user.impDois = props.userActivities[userId]['imp_etapa_ii'];
+            user.impTres = props.userActivities[userId]['imp_acessorias_etapa_iii'];
+            user.impQuatro = props.userActivities[userId]['imp_acessorias_etapa_iv'];
+            user.impAdicional = props.userActivities[userId]['treinamento_adicional'];
+            user.impGestao = props.userActivities[userId]['imp_etapa_iii'];
+            user.impKomunic = props.userActivities[userId]['imp_komunic_'];
+            user.acompanhamentos = props.userActivities[userId]['acompanhamento_'];
+            user.lojaApple = props.userActivities[userId]['loja_apple_'];
+            user.reagendamentos = props.userActivities[userId]['reagendar'];
+            user.chats = props.userActivities[userId]['chat'];
+            user.posVendas = props.userActivities[userId]['ps_venda'];
+            user.komunic = props.userActivities[userId]['komunic'];
 
 
-        console.log(users.find(user => user.id == userId));
-    }
-});
+            user.total = (user.calls * 5) + (user.tasks * 25) + (user.impUm * 60) + 
+            (user.impDois * 60) + (user.impTres * 60) + (user.impQuatro * 60) + 
+            (user.impAdicional * 45) + (user.impGestao * 60) + 
+            (user.impKomunic * 50) + (user.acompanhamentos * 5) + 
+            (user.lojaApple * 30) + (user.reagendamentos * 5) + (user.chats * 15) + 
+            (user.posVendas * 30) + (user.komunic * 5);
+
+
+            console.log(users.find(user => user.id == userId));
+        }
+    });
+};
+
+updateUserActivities();
 
 const dates = ref([]);
+
 
 const handleDates = async (newDates) => {
     dates.value = newDates;
     console.log(dates.value);
-    await makeRequest();
+    const form = useForm({
+        startDate: dates.value[0],
+        endDate: dates.value[1]
+    });
+
+    await form.post('http://127.0.0.1:8000/pontuacao');
 };
 
+watchEffect(() => {
+    console.log('userActivities changed:', props.userActivities);
+    updateUserActivities();
+});
 
-const makeRequest = async () => {
-    try {
-        const response = await axios.post('http://127.0.0.1:8000/pontuacao', {
-            startDate: dates.value[0],
-            endDate: dates.value[1]
-        });
-        console.log(response.data.userActivities);
-    } catch (error) {
-        console.error('Error making request:', error);
-    }
-};
+
 
 </script>
 

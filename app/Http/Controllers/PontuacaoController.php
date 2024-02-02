@@ -98,6 +98,8 @@ class PontuacaoController extends Controller
         $end_date = new DateTime($end_date);
         $end_date->modify('+1 day');
 
+
+
         $user_ids = [
             '15129511',
             '15129907',
@@ -135,6 +137,7 @@ class PontuacaoController extends Controller
             $end = $end_date;
             $interval = $start->diff($end);
             $days = $interval->days;
+            $data_sets = [];
 
             if ($days > 14) {
                 $period = round($days / 3);
@@ -144,39 +147,47 @@ class PontuacaoController extends Controller
                 $middle_date2->modify("+$period days");
 
                 // Now make three requests with the divided date ranges
-                $data_sets = [];
                 $data_sets[] = $pipedriveAPI->getActivities($user_id, $start->format('Y-m-d'), $middle_date1->format('Y-m-d'), "1");
                 sleep(1); // Delay for 1 second
                 $data_sets[] = $pipedriveAPI->getActivities($user_id, $middle_date1->format('Y-m-d'), $middle_date2->format('Y-m-d'), "1");
                 sleep(1); // Delay for 1 second
                 $data_sets[] = $pipedriveAPI->getActivities($user_id, $middle_date2->format('Y-m-d'), $end->format('Y-m-d'), "1");
-                error_log('feito');
+                foreach ($data_sets as $data) {
+                    foreach ($data as $activity) {
+                        if (in_array($activity['type'], $listaTiposAtividades)) {
+                            $userActivities[$user_id][$activity['type']]++;
+                        } else {
+                            continue;
+                        }
+                    }
+                }
 
             } else {
                 // If the date difference is not more than 14 days, make a single request
                 $data_sets = [$pipedriveAPI->getActivities($user_id, $start->format('Y-m-d'), $end->format('Y-m-d'), "1")];
                 error_log('Data collected');
+                foreach ($data_sets as $data) {
+                    foreach ($data as $activity) {
+                        if (in_array($activity['type'], $listaTiposAtividades)) {
+                            $userActivities[$user_id][$activity['type']]++;
+                        } else {
+                            continue;
+                        }
+                    }
+                }
             }
             ;
         }
         ;
-        foreach ($user_ids as $user_id) {
-            foreach ($data_sets as $data) {
-                foreach ($data as $activity) {
-                    if (in_array($activity['type'], $listaTiposAtividades)) {
-                        $userActivities[$user_id][$activity['type']]++;
-                        error_log('Activity type found: ' . $activity['type']);
-                    } else {
-                        error_log('Activity type not found');
-                        continue;
-                    }
-                }
-            }
-        }
+
+
+
+
 
         return Inertia::render(
             'Pontuacao/pontuacaoGeral',
             ['userActivities' => $userActivities, 'csrfToken' => csrf_token()]
         );
+
     }
 }

@@ -1,4 +1,5 @@
 <template>
+
     <table class="w-full divide-y divide-red-400">
         <thead>
             <tr>
@@ -87,15 +88,29 @@
 </template>
 
 <script setup>
+
+// Vue~; 
 import { ref, reactive, watchEffect } from 'vue';
 import { useForm } from '@inertiajs/vue3';
+
+// Calendar~;
 import CalendarRange from '@/Components/CalendarRange.vue';
-// import axios from 'axios';
+
+
+// Vuetify~;
+import '@mdi/font/css/materialdesignicons.css'
+
+import 'vuetify/styles'
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
 
 
 
-
-
+const vuetify = createVuetify({
+    components,
+    directives,
+})
 const props = defineProps(['userActivities', 'csrfToken']);
 
 console.log(props.userActivities);
@@ -105,7 +120,7 @@ const users = reactive([
     id: 15129511, 
     name: 'João', 
     calls: 0, 
-    tasks: 0, 
+    tasks: 0,
     impUm: 0,
     impDois: 0,
     impTres: 0,

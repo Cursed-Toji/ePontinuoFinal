@@ -167,6 +167,9 @@ class PontuacaoController extends Controller
                 $data_sets = [$pipedriveAPI->getActivities($user_id, $start->format('Y-m-d'), $end->format('Y-m-d'), "1")];
                 error_log('Data collected');
                 foreach ($data_sets as $data) {
+                    if (!isset($data) || empty($data)) {
+                        continue;
+                    }
                     foreach ($data as $activity) {
                         if (in_array($activity['type'], $listaTiposAtividades)) {
                             $userActivities[$user_id][$activity['type']]++;
@@ -179,9 +182,6 @@ class PontuacaoController extends Controller
             ;
         }
         ;
-
-
-
 
 
         return Inertia::render(

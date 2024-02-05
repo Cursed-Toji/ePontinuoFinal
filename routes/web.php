@@ -42,9 +42,13 @@ Route::middleware('auth')->group(function () {
 Route::get('/pipedrive', [PipedriveController::class, 'index']);
 Route::post('/pipedrive', [PipedriveController::class, 'index']);
 
+Route::middleware('auth')->group(function () {
 
-Route::get('/pontuacao', [PontuacaoController::class, 'geral']);
-Route::post('/pontuacao', [PontuacaoController::class, 'atualizar']);
+    Route::get('/pontuacao', [PontuacaoController::class, 'geral'])->name('pontuacao.geral');
+    Route::post('/pontuacao', [PontuacaoController::class, 'atualizar']);
+
+});
+
 
 
 require __DIR__ . '/auth.php';

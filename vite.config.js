@@ -6,8 +6,6 @@ export default defineConfig({
 
     server: {
         host: '192.168.15.246',
-        https: false,
-        cors: false,
         hmr: {
             host: '192.168.15.246',
             

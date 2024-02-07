@@ -314,7 +314,7 @@ const handleDates = async (newDates) => {
         endDate: dates.value[1]
     });
 
-    await form.post('http://192.168.15.246/pontuacao');
+    await form.post('/pontuacao');
 };
 
 watchEffect(() => {

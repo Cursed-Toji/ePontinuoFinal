@@ -7,6 +7,7 @@ use App\Http\Controllers\TestController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\Auth\RegisteredUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,12 +21,7 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    return redirect('/login');
 });
 
 Route::get('/dashboard', function () {
@@ -42,10 +38,13 @@ Route::middleware('auth')->group(function () {
 Route::get('/pipedrive', [PipedriveController::class, 'index']);
 Route::post('/pipedrive', [PipedriveController::class, 'index']);
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::get('/pontuacao', [PontuacaoController::class, 'geral'])->name('pontuacao.geral');
     Route::post('/pontuacao', [PontuacaoController::class, 'atualizar']);
+    Route::get('register', [RegisteredUserController::class, 'create'])
+        ->name('register');
+    Route::post('register', [RegisteredUserController::class, 'store']);
 
 });
 

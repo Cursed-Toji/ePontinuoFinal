@@ -314,7 +314,7 @@ const handleDates = async (newDates) => {
         endDate: dates.value[1]
     });
 
-    await form.post(route('teadskopskw')), {
+    await form.post('fodase nao faz sentido'), {
         onFinish: () => form.reset('startDate', 'endDate'),
     };
 };

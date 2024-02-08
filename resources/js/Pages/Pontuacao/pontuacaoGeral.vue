@@ -314,7 +314,7 @@ const handleDates = async (newDates) => {
         endDate: dates.value[1]
     });
 
-    await form.post('fodase nao faz sentido'), {
+    await form.post('/pontuacao'), {
         onFinish: () => form.reset('startDate', 'endDate'),
     };
 };

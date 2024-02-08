@@ -93,6 +93,8 @@ class PontuacaoController extends Controller
     {
         $pipedriveAPI = new PipedriveAPI();
 
+        error_log('did it tried?');
+
         $start_date = $request->input('startDate');
         $end_date = $request->input('endDate');
         $end_date = new DateTime($end_date);

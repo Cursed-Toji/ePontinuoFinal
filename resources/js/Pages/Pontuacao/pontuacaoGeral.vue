@@ -314,7 +314,7 @@ const handleDates = async (newDates) => {
         endDate: dates.value[1]
     });
 
-    form.post(route('/pontuacao'));
+    await form.post('/pontuacao');
 };
 
 watchEffect(() => {

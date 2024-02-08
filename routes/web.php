@@ -41,7 +41,7 @@ Route::post('/pipedrive', [PipedriveController::class, 'index']);
 Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::get('pontuacao', [PontuacaoController::class, 'geral'])->name('pontuacao.geral');
-    Route::post('pontuacao', [PontuacaoController::class, 'atualizar']);
+    Route::post('pontuacao', [PontuacaoController::class, 'atualizar'])->name('pontuacao.atualizar');
     Route::get('register', [RegisteredUserController::class, 'create'])
         ->name('register');
     Route::post('register', [RegisteredUserController::class, 'store']);

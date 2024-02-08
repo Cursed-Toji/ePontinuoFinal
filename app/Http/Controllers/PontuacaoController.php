@@ -150,12 +150,16 @@ class PontuacaoController extends Controller
                 sleep(1); // Delay for 1 second
                 $data_sets[] = $pipedriveAPI->getActivities($user_id, $middle_date2->format('Y-m-d'), $end->format('Y-m-d'), "1");
                 foreach ($data_sets as $data) {
-                    foreach ($data as $activity) {
-                        if (in_array($activity['type'], $listaTiposAtividades)) {
-                            $userActivities[$user_id][$activity['type']]++;
-                        } else {
-                            continue;
+                    if (isset($data)) {
+                        foreach ($data as $activity) {
+                            if (in_array($activity['type'], $listaTiposAtividades)) {
+                                $userActivities[$user_id][$activity['type']]++;
+                            } else {
+                                continue;
+                            }
                         }
+                    } else {
+                        continue;
                     }
                 }
 

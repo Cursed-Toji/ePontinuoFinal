@@ -120,15 +120,18 @@ class AnalistaController extends Controller
             sleep(1); // Delay for 1 second
             $data_sets[] = $pipedriveAPI->getActivities($idAnalista, $middle_date2->format('Y-m-d'), $end->format('Y-m-d'), "1");
             foreach ($data_sets as $data) {
-                foreach ($data as $activity) {
-                    if (in_array($activity['type'], $listaTiposAtividades)) {
-                        $userActivities[$activity['type']]++;
-                    } else {
-                        continue;
+                if (isset($data)) {
+                    foreach ($data as $activity) {
+                        if (in_array($activity['type'], $listaTiposAtividades)) {
+                            $userActivities[$activity['type']]++;
+                        } else {
+                            continue;
+                        }
                     }
+                } else {
+                    continue;
                 }
             }
-
         } else {
             // If the date difference is not more than 14 days, make a single request
             $data_sets = [$pipedriveAPI->getActivities($idAnalista, $start->format('Y-m-d'), $end->format('Y-m-d'), "1")];

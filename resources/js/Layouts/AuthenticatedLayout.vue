@@ -38,7 +38,12 @@ const user = props.auth.user;
                                     Dashboard
                                 </NavLink>
                             </div> -->
-                            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                            <div v-if="!user.isAdmin" class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <NavLink :href="route('analista.geral')" :active="route().current('analista.geral')">
+                                    Atividades
+                                </NavLink>
+                            </div>
+                            <div v-if="user.isAdmin" class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink :href="route('pontuacao.geral')" :active="route().current('pontuacao.geral')">
                                     Atividades
                                 </NavLink>

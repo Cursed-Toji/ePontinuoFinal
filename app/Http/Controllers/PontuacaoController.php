@@ -19,6 +19,7 @@ class PontuacaoController extends Controller
 
         $start_date = date('Y-m-d', strtotime('last monday'));
         $end_date = date('Y-m-d', strtotime('next saturday'));
+        $userActivities = [];
 
 
         $user_ids = [
@@ -51,12 +52,6 @@ class PontuacaoController extends Controller
 
 
         ];
-
-        $userActivities = [];
-        $start_date = date('Y-m-d', strtotime('last monday'));
-        $end_date = date('Y-m-d', strtotime('next saturday'));
-
-
 
 
 

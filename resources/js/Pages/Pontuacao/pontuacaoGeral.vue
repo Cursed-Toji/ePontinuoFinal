@@ -83,7 +83,6 @@
             <CalendarRange @update-dates="handleDates"/>
         </div>
     </div>
-    <button @click="handleDates">Make Request</button>
 
 </template>
 

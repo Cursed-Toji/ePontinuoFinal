@@ -3,7 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PipedriveController;
 use App\Http\Controllers\PontuacaoController;
-use App\Http\Controllers\TestController;
+use App\Http\Controllers\AnalistaController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -48,6 +48,13 @@ Route::middleware(['auth', 'admin'])->group(function () {
         ->name('register');
     Route::post('register', [RegisteredUserController::class, 'store']);
 
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/analista', [AnalistaController::class, 'geral'])
+        ->name('analista.geral');
+    Route::post('analista', [AnalistaController::class, 'atualizar'])
+        ->name('analista.atualizar');
 });
 
 

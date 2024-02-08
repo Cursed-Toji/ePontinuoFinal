@@ -314,7 +314,7 @@ const handleDates = async (newDates) => {
         endDate: dates.value[1]
     });
 
-    await form.post(route('pontuacao.atualizar')), {
+    await form.post(route('teadskopskw')), {
         onFinish: () => form.reset('startDate', 'endDate'),
     };
 };

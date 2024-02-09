@@ -9,72 +9,74 @@
         </thead>
         <tbody class="bg-white divide-red-400">
             <tr class="divide-x divide-gray-400">
-                <th class="bg-gray-50 font-medium">Calls</th>
-                <td v-for="user in users" :key="user.id" class="pl-24 py-1">{{ user.calls }}</td>
+                <th class="bg-gray-50 w-10 font-medium">Calls</th>
+                <td v-for="user in users" :key="user.id" class="text-center py-1">{{ user.calls }}</td>
             </tr>
             <tr class="divide-x divide-gray-400">
                 <th class="bg-gray-50 font-medium">Tasks</th>
-                <td v-for="user in users" :key="user.id" class="pl-24 py-1">{{ user.tasks }}</td>
+                <td v-for="user in users" :key="user.id" class="text-center py-1">{{ user.tasks }}</td>
             </tr>
             <tr class="divide-x divide-gray-400">
                 <th class="bg-gray-50 font-medium">Imp Um</th>
-                <td v-for="user in users" :key="user.id" class="pl-24 py-1">{{ user.impUm }}</td>
+                <td v-for="user in users" :key="user.id" class="text-center py-1">{{ user.impUm }}</td>
             </tr>
             <tr class="divide-x divide-gray-400">
                 <th class="bg-gray-50 font-medium">Imp Dois</th>
-                <td v-for="user in users" :key="user.id" class="pl-24 py-1">{{ user.impDois }}</td>
+                <td v-for="user in users" :key="user.id" class="text-center py-1">{{ user.impDois }}</td>
             </tr>
             <tr class="divide-x divide-gray-400">
                 <th class="bg-gray-50 font-medium">Imp Três</th>
-                <td v-for="user in users" :key="user.id" class="pl-24 py-1">{{ user.impTres }}</td>
+                <td v-for="user in users" :key="user.id" class="text-center py-1">{{ user.impTres }}</td>
             </tr>
             <tr class="divide-x divide-gray-400">
                 <th class="bg-gray-50 font-medium">Imp Quatro</th>
-                <td v-for="user in users" :key="user.id" class="pl-24 py-1">{{ user.impQuatro }}</td>
+                <td v-for="user in users" :key="user.id" class="text-center py-1">{{ user.impQuatro }}</td>
             </tr>
             <tr class="divide-x divide-gray-400">
                 <th class="bg-gray-50 font-medium">Imp Adicional</th>
-                <td v-for="user in users" :key="user.id" class="pl-24 py-1">{{ user.impAdicional }}</td>
+                <td v-for="user in users" :key="user.id" class="text-center py-1">{{ user.impAdicional }}</td>
             </tr>
             <tr class="divide-x divide-gray-400">
                 <th class="bg-gray-50 font-medium">Imp Gestão</th>
-                <td v-for="user in users" :key="user.id" class="pl-24 py-1">{{ user.impGestao }}</td>
+                <td v-for="user in users" :key="user.id" class="text-center py-1">{{ user.impGestao }}</td>
             </tr>
             <tr class="divide-x divide-gray-400">
                 <th class="bg-gray-50 font-medium">Imp Komunic</th>
-                <td v-for="user in users" :key="user.id" class="pl-24 py-1">{{ user.impKomunic }}</td>
+                <td v-for="user in users" :key="user.id" class="text-center py-1">{{ user.impKomunic }}</td>
             </tr>
             <tr class="divide-x divide-gray-400">
                 <th class="bg-gray-50 font-medium">Acompanhamentos</th>
-                <td v-for="user in users" :key="user.id" class="pl-24 py-1">{{ user.acompanhamentos }}</td>
+                <td v-for="user in users" :key="user.id" class="text-center py-1">{{ user.acompanhamentos }}</td>
             </tr>
             <tr class="divide-x divide-gray-400">
                 <th class="bg-gray-50 font-medium">Loja Apple</th>
-                <td v-for="user in users" :key="user.id" class="pl-24 py-1">{{ user.lojaApple }}</td>
+                <td v-for="user in users" :key="user.id" class="text-center py-1">{{ user.lojaApple }}</td>
             </tr>
             <tr class="divide-x divide-gray-400">
                 <th class="bg-gray-50 font-medium">Reagendamentos</th>
-                <td v-for="user in users" :key="user.id" class="pl-24 py-1">{{ user.reagendamentos }}</td>
+                <td v-for="user in users" :key="user.id" class="text-center py-1">{{ user.reagendamentos }}</td>
             </tr>
             <tr class="divide-x divide-gray-400">
                 <th class="bg-gray-50 font-medium">Chats</th>
-                <td v-for="user in users" :key="user.id" class="pl-24 py-1">{{ user.chats }}</td>
+                <td v-for="user in users" :key="user.id" class="text-center py-1">{{ user.chats }}</td>
             </tr>
             <tr class="divide-x divide-gray-400">
                 <th class="bg-gray-50 font-medium">Pos-Vendas</th>
-                <td v-for="user in users" :key="user.id" class="pl-24 py-1">{{ user.posVendas }}</td>
+                <td v-for="user in users" :key="user.id" class="text-center py-1">{{ user.posVendas }}</td>
             </tr>
             <tr class="divide-x divide-gray-400">
                 <th class="bg-gray-50 font-medium">Komunic</th>
-                <td v-for="user in users" :key="user.id" class="pl-24 py-1">{{ user.komunic }}</td>
+                <td v-for="user in users" :key="user.id" class="text-center py-1">{{ user.komunic }}</td>
             </tr>
             <tr class="divide-x divide-gray-400">
                 <th class="bg-gray-50 font-medium">Chamados</th>
-                <td v-for="user in users" :key="user.id" class="pl-24 py-1">{{ user.chamados }}</td>
+                <td v-for="user in users" :key="user.id" class="justify-center w-20">
+                    <input @input="updatePontuacaoTotal(user, $event.target.value)" type="number" class="text-center">
+                </td>
             </tr>
             <tr class="divide-x divide-gray-400">
                 <th class="bg-gray-50 font-medium">PONTUAÇÃO TOTAL</th>
-                <td v-for="user in users" :key="user.id" class="pl-24 py-1">{{ user.total }}</td>
+                <td v-for="user in users" :key="user.id" class="text-center py-1">{{ user.total }}</td>
             </tr>
         </tbody>
     </table>
@@ -133,7 +135,6 @@ const users = reactive([
     chats: 0,
     posVendas: 0,
     komunic: 0,
-    chamados: 0,
     total: 0
     },
     { 
@@ -154,7 +155,6 @@ const users = reactive([
     chats: 0,
     posVendas: 0,
     komunic: 0,
-    chamados: 0,
     total: 0
   },
   { 
@@ -175,7 +175,6 @@ const users = reactive([
     chats: 0,
     posVendas: 0,
     komunic: 0,
-    chamados: 0,
     total: 0
   },
 {
@@ -196,7 +195,6 @@ const users = reactive([
     chats: 0,
     posVendas: 0,
     komunic: 0,
-    chamados: 0,
     total: 0
 },
 {
@@ -217,7 +215,6 @@ const users = reactive([
     chats: 0,
     posVendas: 0,
     komunic: 0,
-    chamados: 0,
     total: 0
 },
 {
@@ -238,7 +235,6 @@ const users = reactive([
     chats: 0,
     posVendas: 0,
     komunic: 0,
-    chamados: 0,
     total: 0
 },
 {
@@ -259,7 +255,6 @@ const users = reactive([
     chats: 0,
     posVendas: 0,
     komunic: 0,
-    chamados: 0,
     total: 0,
 }
     // Add more users as needed
@@ -323,6 +318,13 @@ watchEffect(() => {
     updateUserActivities();
 });
 
+
+function updatePontuacaoTotal(user, pontuacaoChamados) {
+    if (Number.isInteger(Number(pontuacaoChamados))) {
+        console.log(pontuacaoChamados);
+        user.total += Number(pontuacaoChamados) * 10;
+    }
+}
 
 
 </script>

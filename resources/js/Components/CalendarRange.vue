@@ -1,5 +1,7 @@
 <template>
-        <VueDatePicker v-model="dates" :min-date="minDate" :enable-time-picker="false" range/>
+        <VueDatePicker v-model="dates" :min-date="minDate"
+         :enable-time-picker="false" :max-range="30" 
+         range="{ maxRange: 30 }" :format="format"/>
 </template>
 
 <script setup>
@@ -20,6 +22,23 @@ watchEffect(() => {
         emits('update-dates', [formattedStartDate, formattedEndDate]);
     }
 });
+
+const format = (dates) => {
+    const start = dates[0];
+    const end = dates[1];
+
+    const startDay = start.getDate();
+    const startMonth = start.getMonth() + 1;
+    const startYear = start.getFullYear();
+
+    const endDay = end.getDate();
+    const endMonth = end.getMonth() + 1;
+    const endYear = end.getFullYear();
+
+    return `${startDay}/${startMonth}/${startYear} - ${endDay}/${endMonth}/${endYear}`;
+};
+
+
 </script>
 
 <style>

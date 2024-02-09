@@ -83,6 +83,14 @@ watchEffect(() => {
     updateUserActivities();
 });
 
+function updatePontuacaoTotal(user, pontuacaoChamados) {
+    if (Number.isInteger(Number(pontuacaoChamados))) {
+        console.log(pontuacaoChamados);
+        user.total += Number(pontuacaoChamados) * 10;
+    }
+}
+
+
 </script>
 
 <template>
@@ -157,7 +165,9 @@ watchEffect(() => {
             </tr>
             <tr class="divide-x divide-gray-400">
                 <th class="bg-gray-50 font-medium">Chamados</th>
-                <td  class="py-1 text-center">{{ user.chamados }}</td>
+                <td class="text-center">
+                    <input @input="updatePontuacaoTotal(user, $event.target.value)" type="number" class="text-center">
+                </td>
             </tr>
             <tr class="divide-x divide-gray-400">
                 <th class="bg-gray-50 font-medium">PONTUAÇÃO TOTAL</th>

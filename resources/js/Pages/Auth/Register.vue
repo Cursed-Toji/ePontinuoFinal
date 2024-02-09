@@ -23,11 +23,11 @@ const submit = () => {
 
 <template>
     <GuestLayout>
-        <Head title="Register" />
+        <Head title="Novo Cadastro" />
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="name" value="Name" />
+                <InputLabel for="name" value="Nome" />
 
                 <TextInput
                     id="name"
@@ -58,7 +58,7 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+                <InputLabel for="password" value="Senha" />
 
                 <TextInput
                     id="password"
@@ -73,7 +73,7 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password_confirmation" value="Confirm Password" />
+                <InputLabel for="password_confirmation" value="Confirme a senha" />
 
                 <TextInput
                     id="password_confirmation"
@@ -88,7 +88,7 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="idAnalista" value="idAnalista" />
+                <InputLabel for="idAnalista" value="ID do Pipedrive" />
 
                 <TextInput
                     id="idAnalista"
@@ -102,14 +102,14 @@ const submit = () => {
 
             <div class="flex items-center justify-end mt-4">
                 <Link
-                    :href="route('login')"
+                    :href="route('dashboard')"
                     class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
-                    Already registered?
+                    Voltar
                 </Link>
 
                 <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Register
+                    Cadastrar
                 </PrimaryButton>
             </div>
         </form>

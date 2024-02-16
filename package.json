@@ -19,8 +19,17 @@
     },
     "dependencies": {
         "@mdi/font": "^7.4.47",
+        "@syncfusion/ej2-base": "^24.2.6",
+        "@syncfusion/ej2-buttons": "^24.2.5",
+        "@syncfusion/ej2-calendars": "^24.2.5",
+        "@syncfusion/ej2-dropdowns": "^24.2.6",
+        "@syncfusion/ej2-inputs": "^24.2.6",
+        "@syncfusion/ej2-navigations": "^24.2.4",
+        "@syncfusion/ej2-popups": "^24.2.5",
+        "@syncfusion/ej2-vue-schedule": "^24.2.4",
         "@vuepic/vue-datepicker": "^7.4.1",
+        "globalize": "^1.7.0",
         "jquery": "^3.7.1",
-        "vuetify": "^3.5.2"
+        "vuetify": "^3.5.3"
     }
 }

@@ -1,89 +1,104 @@
 <template>
-    <div class="min-w-1/2 mx-auto text-center">
-        <table class="w-full">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Segunda-feira</th>
-                    <th>Terça-feira</th>
-                    <th>Quarta-feira</th>
-                    <th>Quinta-feira</th>
-                    <th>Sexta-feira</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(time, timeIndex) in times" :key="time">
-                    <td class="py-4">{{ time }}</td>
-                    <td class="py-4" v-for="day in days" :key="day">
-                    {{ weekData[day][treinamentos[timeIndex]] }}</td>
-                </tr>
-            </tbody>
-        </table>
-        <input type="date" v-model="selectedDate" @change="onDateChange" class="mt-10">
 
-    </div>
-</template>
+
+	<div>
+		<ejs-schedule ref="schedule" width='80%' height='700px' :selectedDate="selectedDate" currentView='Week'
+		 :eventSettings="eventSettings" @navigating="onNavigating">
+			<e-resources>
+				<e-resource field="OwnerId" title="Owner" name="Owners" :dataSource="ownerDataSource" textField="OwnerText"
+					idField="Id" colorField="OwnerColor"></e-resource>
+			</e-resources>
+		</ejs-schedule>	
+	
+	</div>
+  </template>
+
+
+
+
 
 <script setup>
-import { ref } from 'vue';
+import { defineProps, ref, onMounted } from 'vue'
+import { provide } from "vue";
+import { registerLicense } from '@syncfusion/ej2-base';
+registerLicense('Ngo9BigBOggjHTQxAR8/V1NAaF1cXmhIfEx1RHxQdld5ZFRHallYTnNWUj0eQnxTdEFjW35YcXVRQWRdUk1xXw==');
+import {
+	ScheduleComponent as EjsSchedule, ViewsDirective as EViews, ViewDirective as EView,
+	ResourcesDirective as EResources, ResourceDirective as EResource,
+	Day, Week, WorkWeek, Month, Agenda, actionComplete
+} from "@syncfusion/ej2-vue-schedule";
+
+provide('schedule', [Day, Week, WorkWeek, Month, Agenda]);
+
+const props = defineProps(['schedEvents'])
 
 
-const props = defineProps(['weekData']);
 
-const days = ref([
-    'Monday', 
-    'Tuesday', 
-    'Wednesday', 
-    'Thursday', 
-    'Friday']);
-    
-const times = ref([
-    '09h', 
-    '10h', 
-    '14h', 
-    '16h']);
-    
-const treinamentos = ['treinamento_um', 'treinamento_dois', 'treinamento_tres', 'treinamento_quatro'];
+let eventSettings = {
+	dataSource: props.schedEvents.map(event => {
+		return {
+			...event,
+			StartTime: new Date(event.StartTime.date),
+			EndTime: new Date(event.EndTime.date)
+		}
+	})
+}
+console.log(props.schedEvents.map(event => {
+	return event.OwnerText
+}))
 
-// Add a ref for the selected date
-const selectedDate = ref('');
+let ownerDataSource = props.schedEvents.map(event => ({
+	OwnerText: event.OwnerText,
+	Id: event.Id,
+	OwnerColor: "#993399" // replace with actual color if available
+}))
 
-// Validate the selected date and emit an event
-const onDateChange = async () => {
-    const date = new Date(selectedDate.value);
-    
-    // Check if the selected date is a Monday
-    if (date.getDay() === 0) {
-        // Calculate the date of the next Saturday
-        const nextSaturday = new Date(date);
-        nextSaturday.setDate(date.getDate() + 5);
+const schedule = ref(null)
 
-        // Format the dates as 'yyyy-mm-dd'
-        const mondayDate = date.toISOString().split('T')[0];
-        const saturdayDate = nextSaturday.toISOString().split('T')[0];
+onMounted(() => {
+  if (schedule.value) {
+    let scheduleComponent = schedule.value.ej2Instances;
+    let viewDates = scheduleComponent.getCurrentViewDates();
+    console.log(viewDates);
+  }
+})
 
-        // Send a POST request to your PHP controller with the selected dates as the payload
-        const response = await fetch('http://127.0.0.1:8000/pipedrive', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ monday: mondayDate, saturday: saturdayDate })
-        });
+const onNavigating = (e) => {
+	if (e.action === 'date') {
+		setTimeout(() => {
+			let scheduleComponent = schedule.value.ej2Instances;
+			let viewDates = scheduleComponent.getCurrentViewDates();
+			console.log(viewDates);
 
-        // Handle the response
-        if (response.ok) {
-            const data = await response.json();
-            console.log("deu certo acho")
-            // Do something with the data
+			let startDate = viewDates[0];
+			let endDate = viewDates[6];
 
-        } else {
-            console.error('Error:', response.status, response.statusText);
-        }
-    } else {
-        alert('Por favor, selecione uma segunda-feira!');
-        selectedDate.value = '';
-    }
-};
+			
+			const form = useForm({
+				startDate: viewDates[0],
+				endDate: viewDates[6]
+			});
+
+			console.log('Start Date:', startDate);
+			console.log('End Date:', endDate);
+		}, 0);
+	}
+}
+
 
 </script>
+
+
+
+
+  
+<style>
+@import '../../../../node_modules/@syncfusion/ej2-base/styles/material.css';
+@import '../../../../node_modules/@syncfusion/ej2-buttons/styles/material.css';
+@import '../../../../node_modules/@syncfusion/ej2-calendars/styles/material.css';
+@import '../../../../node_modules/@syncfusion/ej2-dropdowns/styles/material.css';
+@import '../../../../node_modules/@syncfusion/ej2-inputs/styles/material.css';
+@import '../../../../node_modules/@syncfusion/ej2-navigations/styles/material.css';
+@import '../../../../node_modules/@syncfusion/ej2-popups/styles/material.css';
+@import '../../../../node_modules/@syncfusion/ej2-vue-schedule/styles/material.css';
+</style>

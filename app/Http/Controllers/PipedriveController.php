@@ -20,12 +20,12 @@ class PipedriveController extends Controller
         // Check if the request is a POST request
         if ($request->isMethod('post')) {
             // Get the start and end dates from the request
-            $start_date = $request->input('monday');
-            $end_date = $request->input('saturday');
+            $startDate = $request->input('monday');
+            $endDate = $request->input('saturday');
         } else {
             // Default start and end dates for GET requests
             $start_date = date('Y-m-d', strtotime('last monday'));
-            $end_date = date('Y-m-d', strtotime('next saturday'));
+            $endDate = date('Y-m-d', strtotime('next saturday'));
         }
 
         $listaTiposAtividades = [
@@ -50,61 +50,101 @@ class PipedriveController extends Controller
             '13320209'
         ];
 
-        $weekdays = [
-            'Monday',
-            'Tuesday',
-            'Wednesday',
-            'Thursday',
-            'Friday'
+        // Map user IDs to names
+        $userNames = [
+            '15129511' => 'joao.lima',
+            '15129907' => 'luiz',
+            '15441515' => 'matheus',
+            '14935141' => 'felipe',
+            '12907661' => 'volnei',
+            '13711853' => 'thomas',
+            '13320209' => 'lucas'
         ];
 
-        $trainings = [
-            'treinamento_um',
-            'treinamento_dois',
-            'treinamento_tres',
-            'treinamento_quatro'
-        ];
+        $startDate = new \DateTime(date('Y-m-d', strtotime('-1 day'))); // Yesterday
+        $endDate = new \DateTime(date('Y-m-d', strtotime('+3 months'))); // 3 months from now
 
-        $weekData = [];
-        foreach ($weekdays as $day) {
-            $weekData[$day] = array_fill_keys($trainings, 7);
+        $activityHours = [9, 10, 14, 16];
+        $id = 1;
+        $schedEvents = [];
+
+        for ($date = clone $startDate; $date <= $endDate; $date->modify('+1 day')) {
+            foreach ($activityHours as $hour) {
+                $schedEvents[] = [
+                    'Id' => $id,
+                    'Subject' => "7 vagas disponíveis",
+                    'EventType' => 'CONFIRMED',
+                    'StartTime' => (clone $date)->setTime($hour, 0),
+                    'EndTime' => (clone $date)->setTime($hour + 1, 0),
+                    'OwnerId' => $id,
+                    'OwnerText' => implode(', ', $userNames)
+                ];
+                $id++;
+            }
         }
 
-        foreach ($user_ids as $user_id) {
-            $data = $pipedriveAPI->getActivities($user_id, $start_date, $end_date);
+        // Map due_time to hour
+        $dueTimeToHour = [
+            '12:00' => '09',
+            '13:00' => '10',
+            '17:00' => '14',
+            '19:00' => '16'
+        ];
 
-            $seenDatesTimes = [];
+        foreach ($userNames as $userId => $username) {
+            // Fetch activities from Pipedrive API for the current user
+            $activities = $pipedriveAPI->getActivities($userId, $startDate, $endDate, '0');
 
-            foreach ($data as $activity) {
-                if (in_array($activity['type'], $listaTiposAtividades)) {
-                    $weekday = date('l', strtotime($activity['due_date']));
-                    $dateTimeKey = $weekday . $activity['due_time'];
-                    if (isset($weekData[$weekday]) && !isset($seenDatesTimes[$dateTimeKey])) {
-                        switch ($activity['due_time']) {
-                            case '12:00':
-                                $weekData[$weekday]['treinamento_um']--;
-                                break;
-                            case '13:00':
-                            case '13:30':
-                                $weekData[$weekday]['treinamento_dois']--;
-                                break;
-                            case '17:00':
-                                $weekData[$weekday]['treinamento_tres']--;
-                                break;
-                            case '19:00':
-                                $weekData[$weekday]['treinamento_quatro']--;
-                                break;
+            foreach ($activities as $activity) {
+                // If the key doesn't exist, skip this iteration
+                if (!isset($dueTimeToHour[$activity['due_time']])) {
+                    continue;
+                }
+
+                $hour = $dueTimeToHour[$activity['due_time']];
+                $dueDate = $activity['due_date'];
+
+                foreach ($schedEvents as &$schedEvent) {
+                    $schedEventHour = $schedEvent['StartTime']->format('H');
+                    $schedEventDate = $schedEvent['StartTime']->format('Y-m-d');
+
+                    if ($schedEventHour == $hour && $schedEventDate == $dueDate) {
+                        error_log("found");
+
+                        // Convert OwnerText to array
+                        $ownerTextArray = explode(', ', $schedEvent['OwnerText']);
+
+                        // Find the key of the username in the OwnerText array
+                        $key = array_search($username, $ownerTextArray);
+
+                        // If the username is found, remove it
+                        if ($key !== false) {
+                            error_log('tá dando certo');
+                            unset($ownerTextArray[$key]);
+
+                            // Update the OwnerText attribute
+                            $schedEvent['OwnerText'] = implode(', ', $ownerTextArray);
+
+                            // Update the Subject attribute
+                            $numVagas = intval(explode(' ', $schedEvent['Subject'])[0]) - 1;
+                            $schedEvent['Subject'] = $numVagas . " vagas disponíveis";
+
                         }
-                        $seenDatesTimes[$dateTimeKey] = true;
+
+                        break;
                     }
                 }
             }
         }
 
-        error_log(json_encode($weekData, JSON_PRETTY_PRINT));
 
 
-        return Inertia::render('Pipedrive/Index', ['weekData' => $weekData]);
+        error_log('chegho aq');
+        error_log(JSON_ENCODE($schedEvents) . "\n");
+
+        return Inertia::render('Pipedrive/Index', [
+            'schedEvents' => $schedEvents,
+        ]);
     }
 
     /**

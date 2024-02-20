@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PipedriveController;
 use App\Http\Controllers\PontuacaoController;
 use App\Http\Controllers\AnalistaController;
+use App\Http\Controllers\ThegameController;
+
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -55,6 +57,10 @@ Route::middleware('auth')->group(function () {
         ->name('analista.geral');
     Route::post('analista', [AnalistaController::class, 'atualizar'])
         ->name('analista.atualizar');
+    Route::get('/pipedrive', [PipedriveController::class, 'index'])
+        ->name('pipedrive');
+    Route::get('/thegame', [ThegameController::class, 'index'])
+        ->name('thegame');
 });
 
 

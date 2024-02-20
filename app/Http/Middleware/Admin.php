@@ -16,7 +16,7 @@ class Admin
     public function handle(Request $request, Closure $next): Response
     {
 
-        if (auth()->user()->isAdmin !== true) {
+        if (auth()->user()->role !== 'admin') {
             return response()->json(['message' => 'Acesso não autorizado, danadinho.'], 401);
         }
 

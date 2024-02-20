@@ -38,26 +38,38 @@ const user = props.auth.user;
                                     Dashboard
                                 </NavLink>
                             </div> -->
-                            <div v-if="!user.isAdmin" class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                            <div v-if="user.role === 'user'" class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink :href="route('analista.geral')" :active="route().current('analista.geral')">
                                     Atividades
                                 </NavLink>
                             </div>
-                            <div v-if="user.isAdmin" class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                            <div v-if="user.role === 'admin'" class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink :href="route('pontuacao.geral')" :active="route().current('pontuacao.geral')">
-                                    Atividades
+                                    Atividades Gerais
                                 </NavLink>
                             </div>
-                            <div v-if="user.isAdmin" class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                            <div v-if="user.role === 'admin'" class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink :href="route('register')" :active="route().current('register')">
                                     Novo Cadastro
                                 </NavLink>
                             </div>
-                            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                            <div v-if="user.role === 'consultor' || user.role === 'admin'"
+                             class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                             
                                 <NavLink :href="route('pipedrive')" :active="route().current('pipedrive')">
-                                    Novo Cadastro
+                                    Agendamentos
                                 </NavLink>
+
                             </div>
+
+                            <div v-if="user.role === 'user'" class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                             
+                                <NavLink :href="route('thegame')" :active="route().current('thegame')">
+                                    The Game
+                                </NavLink>
+
+                            </div>
+
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ms-6">

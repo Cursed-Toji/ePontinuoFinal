@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { ref, watchEffect, defineEmits } from 'vue';
+import { ref, watchEffect } from 'vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
 
 const emits = defineEmits(['update-dates']);

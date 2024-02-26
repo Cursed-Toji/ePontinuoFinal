@@ -62,14 +62,6 @@ const user = props.auth.user;
 
                             </div>
 
-                            <div v-if="user.role === 'user'" class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                             
-                                <NavLink :href="route('thegame')" :active="route().current('thegame')">
-                                    The Game
-                                </NavLink>
-
-                            </div>
-
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ms-6">

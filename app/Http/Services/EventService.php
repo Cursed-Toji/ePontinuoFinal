@@ -43,6 +43,33 @@ class EventService
         ];
 
         foreach ($activities as $activity) {
+
+
+            if ($activity['type'] == 'caso_critico_') {
+                $dueDate = $activity['due_date'];
+                foreach ($schedEvents as &$schedEvent) {
+                    $schedEventDate = $schedEvent['StartTime']->format('Y-m-d');
+                    if ($schedEventDate == $dueDate) {
+                        $ownerTextArray = explode(', ', $schedEvent['OwnerText']);
+                        $key = array_search($username, $ownerTextArray);
+                        if ($key !== false) {
+                            unset($ownerTextArray[$key]);
+                            $schedEvent['OwnerText'] = implode(', ', $ownerTextArray);
+        
+                            // Update the Subject attribute
+                            $numVagas = intval(explode(' ', $schedEvent['Subject'])[0]) - 1;
+                            $schedEvent['Subject'] = $numVagas . " vagas disponíveis";
+        
+                            // Update the OwnerColor attribute based on the number of vagas
+                            $schedEvent['OwnerColor'] = $this->getOwnerColor($numVagas);
+                        }
+                    }
+                }
+                continue;
+            }
+
+
+
             // If the key doesn't exist, skip this iteration
             if (!isset($dueTimeToHour[$activity['due_time']])) {
                 continue;

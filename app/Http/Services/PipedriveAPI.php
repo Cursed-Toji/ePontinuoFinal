@@ -37,6 +37,7 @@ class PipedriveAPI
             return [];
         }
 
+
         return $response['data'];
 
     }
@@ -50,8 +51,11 @@ class PipedriveAPI
             'done' => $done,
             'limit' => "30000000",
             'api_token' => "d0f27a8c3a00dbd3bab46ead2a6d3bfc7fec6aa7",
-            'type' => 'imp_acessorias_etapa_i,imp_etapa_ii,imp_acessorias_etapa_iii,imp_acessorias_etapa_iv,imp_etapa_iii,treinamento_adicional,imp_komunic_'
+            'type' => 'caso_critico_,imp_acessorias_etapa_i,imp_etapa_ii,imp_acessorias_etapa_iii,imp_acessorias_etapa_iv,imp_etapa_iii,treinamento_adicional,imp_komunic_'
         ];
+
+        error_log(json_encode($params));
+        
 
         $url = $this->base_url . '/activities?' . http_build_query($params);
 
